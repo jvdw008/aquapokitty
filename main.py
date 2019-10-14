@@ -612,6 +612,12 @@ def update():
             if not jellyOnLevel:
                 enemyList.append(Enemy(random.getrandbits(7) + 200, random.getrandbits(5) + 20, False, enemyShips[2], 2, 1, random.getrandbits(1), 20, 17))
                 
+            # Check for final jelly not in the sky
+            if len(enemyList) == 1 and enemyList[0].getType() == 2:
+                if enemyList[0].getPos()[1] < 25:
+                    del enemyList[0]
+                    gc.collect()
+            
         else:
             levelComplete = True
             if cPressed:
@@ -655,7 +661,8 @@ def update():
                     tmpId = tmpCtr
                     break
                 
-            del enemyList[tmpCtr - 1]
+            if len(enemyList) > 0:
+                del enemyList[tmpCtr - 1]
             gc.collect()
         
         if len(kittyList) > 0:
